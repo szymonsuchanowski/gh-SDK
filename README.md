@@ -40,6 +40,9 @@ GitHub API posiada bardzo duże możliwości zarządzania kontem. To co robisz p
 - poberać informacje o błędach w repozytorium ([dokumentacja](https://docs.github.com/en/rest/reference/issues#list-repository-issues))
 - pobrać informacje o aktywności ([dokumentacja](https://docs.github.com/en/rest/reference/activity#list-repository-events))
 
+
+> Chciałbym również, abyś zwrócił uwagę, że opis dokumentacji jest oparty o przykłady dla `curl`. To dość powszechne i uważane za uniwersalne rozwiązanie. Dlatego powinieneś umieć przełożyć te przykłady na JavaScript. W tym może Ci pomóc [ta dokumentacja](https://idratherbewriting.com/learnapidoc/docapis_understand_curl.html). 
+
 Możesz również zarządzać swoim kontem jeśli [uwierzytelnisz](https://docs.github.com/en/rest/guides/basics-of-authentication) swoje zapytanie. Najprościej jest to zrobić [generując odpowiedni token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token). Następnie w nagłówku przesyłając jego zawartość tak jak w przykładzie na samym początku.
 
 Jak widzisz jest mnóstwo możliwości. Ty powinieneś wybrać minimalną funkcjonalność dla swojej biblioteki. Taką, która umożliwi Ci jś wykorzystać do tworzenia własnego portofio. Portfolio, które samo się aktualizuje czerpiąc dane o projektach ze swojego konta GitHub.
