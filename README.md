@@ -57,6 +57,8 @@ Pamiętaj, że najprościej jest napisać rozwiązanie pod konkretny przypadek, 
 
 Zadaniem dodatkowym (na teraz lub potem) będzie stworzenie przynajmniej szkieletu "samoaktualizującego się" portfolio, które na pewno zostanie docenione przez Twojego potencjalnego pracodawcę.
 
+PS. Aby móc testować zapytania do API przy użyciu `fetch()` musisz mieć zainstalowany np. `node-fetch` ([StackOverflow](https://stackoverflow.com/questions/48433783/referenceerror-fetch-is-not-defined)). Pamiętaj, aby zaimportować i przypisać do odpowiedniego elementu np. `global.fetch = require("node-fetch");`.
+
 
 
 
