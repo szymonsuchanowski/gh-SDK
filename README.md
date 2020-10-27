@@ -29,6 +29,8 @@ gh.sendInvitation('task-js-basics', 'bogolubow');
 
 Wew. tej funkcji oczywiście będzie kod, który wstawiłem na samym początku jednak wtedy będziesz mógł go wykorzystać w wielu swoich projektach w wygodniejszy sposób. To pozwoli Ci zaoszczędzić sporo czasu i maksymalizować zyski.
 
+> Zwróć uwagę, że w moim `fetch()` jest kilka dodatkowych opcji. Nie jest to związane z samym GitHub API. To opcje dostepne dla `fetch()` więcej możesz przeczytać na [javascript.info](https://javascript.info/fetch-api).
+
 GitHub API posiada bardzo duże możliwości zarządzania kontem. To co robisz przy pomocy interfejsu, możesz również zrobić przy pomocy API, np.:
 
 - pobrać informacje o użytkowniku ([dokumentacja](https://docs.github.com/en/rest/reference/users#get-a-user))
