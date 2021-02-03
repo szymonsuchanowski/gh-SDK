@@ -55,6 +55,8 @@ Pamiętaj, że najprościej jest napisać rozwiązanie pod konkretny przypadek, 
 - GREEN: implementacja konkretnego przypadku
 - REFACTOR: uogólnienie rozwiązania
 
+> **Uwaga!** Ponownie rozmyślnie łamiemy zasadę [FIRST](https://devszczepaniak.pl/testy-jednostkowe-first/). Tym razem w punkcie *Isolated* a nawet *Fast*. Będziemy wykonywać testy na żywym organiźmie tj. metoda do wysyłania zaproszenia będzie faktycznie wysyłać zaproszenie czyli nasze testy będą komunikowac się z API. Ten problem znów jest rozwiązywany przez [Mocki](https://devenv.pl/jest-sposoby-mockowania/), które będziemy omawiać w późniejszym terminie.
+
 Zadaniem dodatkowym (na teraz lub potem) będzie stworzenie przynajmniej szkieletu "samoaktualizującego się" portfolio, które na pewno zostanie docenione przez Twojego potencjalnego pracodawcę.
 
 PS. Aby móc testować zapytania do API przy użyciu `fetch()` musisz mieć zainstalowany np. `node-fetch` ([StackOverflow](https://stackoverflow.com/questions/48433783/referenceerror-fetch-is-not-defined)). Pamiętaj, aby zaimportować i przypisać do odpowiedniego elementu np. `global.fetch = require("node-fetch");`.
