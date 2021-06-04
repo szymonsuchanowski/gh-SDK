@@ -1,3 +1,10 @@
+> ⭐ ***README** to coś więcej niż opis. Poprzez nie **pokazujesz swoje mocne strony** – swoją dokładność, sposób myślenia i podejście do rozwiązywania problemów. Niech Twoje README pokaże, że masz **świetne predyspozycje do rozwoju!***
+> 
+> 🎁 *Zacznij od razu. Skorzystaj z **[szablonu README i wskazówek](https://github.com/devmentor-pl/readme-template)**.* 
+
+&nbsp;
+
+
 # JavaScript: Testowanie
 
 Twoim zadaniem jest stworzenie czegoś na pograniczu Klienta czy [SDK](https://pl.wikipedia.org/wiki/Software_development_kit) dla [GitHub API](https://docs.github.com/en/rest) czyli bibioteki, która utałwi korzystywanie z dostępych rozwiązń.
@@ -63,12 +70,8 @@ PS. Aby móc testować zapytania do API przy użyciu `fetch()` musisz mieć zain
 
 
 
+&nbsp;
 
-
-
-
-
-
-
-
-
+> ⭐ ***README** to coś więcej niż opis. Poprzez nie **pokazujesz swoje mocne strony** – swoją dokładność, sposób myślenia i podejście do rozwiązywania problemów. Niech Twoje README pokaże, że masz **świetne predyspozycje do rozwoju!***
+> 
+> 🎁 *Zacznij od razu. Skorzystaj z **[szablonu README i wskazówek](https://github.com/devmentor-pl/readme-template)**.* 
