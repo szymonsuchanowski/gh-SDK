@@ -66,8 +66,42 @@ Pamiętaj, że najprościej jest napisać rozwiązanie pod konkretny przypadek, 
 
 Zadaniem dodatkowym (na teraz lub potem) będzie stworzenie przynajmniej szkieletu "samoaktualizującego się" portfolio, które na pewno zostanie docenione przez Twojego potencjalnego pracodawcę.
 
-PS. Aby móc testować zapytania do API przy użyciu `fetch()` musisz mieć zainstalowany np. `node-fetch` ([StackOverflow](https://stackoverflow.com/questions/48433783/referenceerror-fetch-is-not-defined)). Pamiętaj, aby zaimportować i przypisać do odpowiedniego elementu np. `global.fetch = require("node-fetch");`.
+## Konfiguracja
 
+Aby móc testować zapytania do API przy użyciu `fetch()` musisz mieć zainstalowany np. `node-fetch` ([StackOverflow](https://stackoverflow.com/questions/48433783/referenceerror-fetch-is-not-defined)). Pamiętaj, aby zaimportować i przypisać do odpowiedniego elementu tj.:
+
+```
+import nodeFetch from "node-fetch"; // pobieram paczkę
+global.fetch = nodeFetch; // przypisuję do fetch pobraną paczkę, w Node.js global === window
+```
+
+PS. Pamiętaj, aby [skonfigurować wsparcie dla ES6](https://jestjs.io/docs/getting-started#using-babel).
+
+
+Może się okazać, że po odpaleniu testów w terminalu zobaczysz błąd:
+```
+import http from 'http';
+^^^^^^
+
+SyntaxError: Cannot use import statement outside a module
+import nodeFetch from "node-fetch"; 
+```
+
+To dlatego, że domyślnie `babel-jest` nie transpiluje plików wewnątrz katalogu `node_modules`. My chcemy to zmienić dlatego w pliku `package.json` dodajemy klucz `jest` z odpowiednią pozycją:
+
+```
+  "scripts": {
+    "test": "jest",
+    "test-watch": "jest --watchAll",
+    "start": "webpack serve --mode development --open",
+    "build": "webpack --mode production"
+  },
+  "jest": {
+    "transformIgnorePatterns": []
+  },
+``` 
+
+Teraz już wszystko powinno działać jak należy. 
 
 
 &nbsp;
