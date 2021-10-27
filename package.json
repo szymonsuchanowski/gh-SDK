@@ -1,0 +1,43 @@
+{
+  "name": "23-task-js-testing",
+  "version": "1.0.0",
+  "description": "> ⭐ ***README** to coś więcej niż opis. Poprzez nie **pokazujesz swoje mocne strony** – swoją dokładność, sposób myślenia i podejście do rozwiązywania problemów. Niech Twoje README pokaże, że masz **świetne predyspozycje do rozwoju!*** >  > 🎁 *Zacznij od razu. Skorzystaj z **[szablonu README i wskazówek](https://github.com/devmentor-pl/readme-template)**.*",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test-watch": "jest --watchAll",
+    "start": "webpack serve --mode development --open",
+    "build": "webpack --mode production"
+  },
+  "jest": {
+    "transformIgnorePatterns": []
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/szymonsuchanowski/task-js-testing.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/szymonsuchanowski/task-js-testing/issues"
+  },
+  "homepage": "https://github.com/szymonsuchanowski/task-js-testing#readme",
+  "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "babel-jest": "^27.3.1",
+    "babel-loader": "^8.2.3",
+    "css-loader": "^6.5.0",
+    "html-webpack-plugin": "^5.5.0",
+    "jest": "^27.3.1",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.60.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.4.0",
+    "whatwg-fetch": "^3.6.2"
+  },
+  "dependencies": {
+    "node-fetch": "^3.0.0"
+  }
+}
