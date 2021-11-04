@@ -1,7 +1,10 @@
 class GitHubSDK {
-    constructor(username) {
+    constructor(username, token) {
         if(!username) {
             throw new Error('No username specified!');
+        }
+        if(!token) {
+            throw new Error('No token specified!');
         }
     }
 }
