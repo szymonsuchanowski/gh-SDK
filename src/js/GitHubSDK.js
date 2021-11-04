@@ -4,6 +4,7 @@ class GitHubSDK {
     constructor(usernameValue = null, tokenValue = null) {
         this._setProperty('username', usernameValue);
         this._setProperty('token', tokenValue);
+        this.url = 'https://api.github.com/';
     }
 
     getUsername() {
@@ -15,11 +16,7 @@ class GitHubSDK {
     }
 
     async validateUser() {
-        const promise = await fetch('https://api.github.com/user', {
-            headers: {
-                Authorization: `token ${this.token}`,
-            },
-        });
+        const promise = await this._fetch('user', this._options());
         if (promise.ok) {
             const response = await promise.json();
             if (response.login === this.username) {
@@ -37,6 +34,18 @@ class GitHubSDK {
             throw new Error(`No ${propertyName} specified!`);
         }
         this[propertyName] = propertyValue;
+    }
+
+    async _fetch(additionalPath, options) {
+        return await fetch(this.url + additionalPath, options);
+    }
+
+    _options() {
+        return {
+            headers: {
+                Authorization: `token ${this.token}`,
+            },
+        }
     }
 }
 
