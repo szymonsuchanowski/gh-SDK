@@ -17,6 +17,19 @@ describe('GitHubSDK class', () => {
             };
             expect(createGhSdk).toThrow();
         });
+        it('Should throw exception when token & username is not specified', () => {
+            function createGhSdk() {
+                new GitHubSDK('xxxxx', undefined);
+            };
+            expect(createGhSdk).toThrow();
+        });
+        it('Should set username & token when create instance', () => {
+            const username = 'xxxx';
+            const token = '12345678';
+            const ghSdk = new GitHubSDK(username, token);
+            expect(ghSdk.getUsername()).toBe(username);
+            expect(ghSdk.getToken()).toBe(token);
+        })
     })
 })
 
