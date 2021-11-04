@@ -8,7 +8,13 @@ describe('GitHubSDK class', () => {
         it('Should throw exception when username is not specified', () => {
             function createGhSdk() {
                 new GitHubSDK(undefined, 'xxxx');
-            }
+            };
+            expect(createGhSdk).toThrow();
+        });
+        it('Should throw exception when token is not specified', () => {
+            function createGhSdk() {
+                new GitHubSDK('xxxxx', undefined);
+            };
             expect(createGhSdk).toThrow();
         });
     })
