@@ -24,7 +24,7 @@ describe('GitHubSDK class', () => {
             expect(createGhSdk).toThrow();
         });
         it('Should set username & token when create instance', () => {
-            const username = 'xxxx';
+            const username = 'xxxxx';
             const token = '12345678';
             const ghSdk = new GitHubSDK(username, token);
             expect(ghSdk.getUsername()).toBe(username);

@@ -1,10 +1,7 @@
 class GitHubSDK {
-    constructor(username = null, token = null) {
-        this._setUsername(username);
-        this._setToken(token);
-        if(!token) {
-            throw new Error('No token specified!');
-        }
+    constructor(usernameValue = null, tokenValue = null) {
+        this._setProperty('username', usernameValue);
+        this._setProperty('token', tokenValue);
     }
 
     getUsername() {
@@ -15,18 +12,11 @@ class GitHubSDK {
         return this.token;
     }
 
-    _setUsername(usernameValue) {
-        if(!usernameValue) {
-            throw new Error('No username specified!');
+    _setProperty(propertyName, propertyValue) {
+        if(!propertyValue) {
+            throw new Error(`No ${propertyName} specified!`);
         }
-        this.username = usernameValue;
-    }
-
-    _setToken(tokenValue) {
-        if(!tokenValue) {
-            throw new Error('No token specified!');
-        }
-        this.token = tokenValue;
+        this[propertyName] = propertyValue;
     }
 }
 
