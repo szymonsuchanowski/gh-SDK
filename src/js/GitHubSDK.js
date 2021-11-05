@@ -1,5 +1,3 @@
-import user from "./user.config";
-
 class GitHubSDK {
     constructor(usernameValue = null, tokenValue = null) {
         this._setProperty('username', usernameValue);
@@ -16,7 +14,14 @@ class GitHubSDK {
     }
 
     async validateUser() {
-        const promise = await this._fetch('user', this._options());
+        const response = await this._fetch('user', this._options());
+        if (response.login === this.username) {
+            return response;
+        } else {
+            throw new Error('Token is not connected with specified username!');
+        }
+        //return response;
+        /*const promise = await this._fetch('user', this._options());
         if (promise.ok) {
             const response = await promise.json();
             if (response.login === this.username) {
@@ -26,7 +31,27 @@ class GitHubSDK {
         } else if (promise.status === 401) {
             throw new Error('Unauthorized token!');
         }
-        throw new Error(promise.status);
+        throw new Error(`Error! Status: ${promise.status}`);*/
+    }
+
+    async getUserInfo(username) {
+        if (!username) {
+            throw new Error('No username specified!');
+        }
+        return await this._fetch(`users/${username}`, this._options());
+        /*if(username) {
+            const promise = await this._fetch(`users/${username}`, this._options());
+            if (promise.ok) 
+        } else {
+            throw new Error('No username specified!');
+        }*/
+    }
+
+    async getUserRepos(username) {
+        if(!username) {
+            throw new Error('No username specified!');
+        }
+        return await this._fetch(`users/${username}/repos`, this._options());
     }
 
     _setProperty(propertyName, propertyValue) {
@@ -37,12 +62,21 @@ class GitHubSDK {
     }
 
     async _fetch(additionalPath, options) {
-        return await fetch(this.url + additionalPath, options);
+        const promise = await fetch(this.url + additionalPath, options);
+        if (promise.ok) {
+            return promise.json();
+        }
+        throw new Error(promise.statusText);
     }
+
+    /*async _fetch(additionalPath, options) {
+        return await fetch(this.url + additionalPath, options);
+    }*/
 
     _options() {
         return {
             headers: {
+                Accept: "application/vnd.github.v3+json",
                 Authorization: `token ${this.token}`,
             },
         }

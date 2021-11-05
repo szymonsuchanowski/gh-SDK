@@ -4,6 +4,6 @@ import user from './user.config';
 document.addEventListener('DOMContentLoaded', init);
 
 function init() {
-
+    const gh = new GitHubSDK(user.username, user.token);
 }
 
