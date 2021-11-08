@@ -9,14 +9,14 @@ describe('GitHubSDK class', () => {
             function createGhSdk() {
                 new GitHubSDK(undefined, 'xxxx');
             };
-            expect(createGhSdk).toThrow();
+            expect(createGhSdk).toThrow('No username specified!');
         });
 
         it('Should throw exception when token is not specified', () => {
             function createGhSdk() {
                 new GitHubSDK('xxxxx');
             };
-            expect(createGhSdk).toThrow();
+            expect(createGhSdk).toThrow('No token specified!');
         });
 
         it('Should throw exception when token & username are not specified', () => {
@@ -73,8 +73,8 @@ describe('GitHubSDK class', () => {
 
         it('Should return user login when correct username is specified', async () => {
             const ghSdk = new GitHubSDK(user.username, user.token);
-            const { login } = await ghSdk.getUserInfo('szymonsuchanowski');
-            expect(login).toBe('szymonsuchanowski');
+            const { login } = await ghSdk.getUserInfo('devmentor-pl');
+            expect(login).toBe('devmentor-pl');
         });
     });
 
@@ -91,9 +91,111 @@ describe('GitHubSDK class', () => {
 
         it('Should return repos list when username is correct', async () => {
             const ghSdk = new GitHubSDK(user.username, user.token);
-            const result = await ghSdk.getUserRepos('szymonsuchanowski');
+            const result = await ghSdk.getUserRepos('devmentor-pl');
             expect(Array.isArray(result)).toBeTruthy();
+        });
+    });
+
+    describe('getRepoCommits(username, repoName)', () => {
+        it('Should throw exception when username & repo name is not specified', async () => {
+            const ghSdk = new GitHubSDK(user.username, user.token);
+            await expect(ghSdk.getRepoCommits()).rejects.toThrow('No username or repo name specified!');
         })
+
+        it('Should throw exception when username is not specified', async () => {
+            const ghSdk = new GitHubSDK(user.username, user.token);
+            await expect(ghSdk.getRepoCommits(undefined, 'practice-js-testing')).rejects.toThrow('No username or repo name specified!');
+        });
+
+        it('Should throw exception when repo name is not specified', async () => {
+            const ghSdk = new GitHubSDK(user.username, user.token);
+            await expect(ghSdk.getRepoCommits('szymonsuchanowski')).rejects.toThrow('No username or repo name specified!');
+        });
+
+        it('Should throw exception when specified username is incorrect', async () => {
+            const ghSdk = new GitHubSDK(user.username, user.token);
+            await expect(ghSdk.getRepoCommits('///use---r--does-not-exist////', 'xxx')).rejects.toThrow('Not Found');
+        });
+
+        it('Should throw exception when specified repo name is incorrect', async () => {
+            const ghSdk = new GitHubSDK(user.username, user.token);
+            await expect(ghSdk.getRepoCommits('szymonsuchanowski', 'xxx')).rejects.toThrow('Not Found');
+        });
+
+        it('Should return commits list when username & repo name are correct', async () => {
+            const ghSdk = new GitHubSDK(user.username, user.token);
+            const result = await ghSdk.getRepoCommits('devmentor-pl', 'practice-js-basics');
+            expect(Array.isArray(result)).toBeTruthy();
+        });
+    });
+
+    describe('getRepoReadme(username, repoName)', () => {
+        it('Should throw exception when username & repo name is not specified', async () => {
+            const ghSdk = new GitHubSDK(user.username, user.token);
+            await expect(ghSdk.getRepoReadme()).rejects.toThrow('No username or repo name specified!');
+        });
+
+        it('Should throw exception when username is not specified', async () => {
+            const ghSdk = new GitHubSDK(user.username, user.token);
+            await expect(ghSdk.getRepoReadme(undefined, 'practice-js-testing')).rejects.toThrow('No username or repo name specified!');
+        });
+
+        it('Should throw exception when repo name is not specified', async () => {
+            const ghSdk = new GitHubSDK(user.username, user.token);
+            await expect(ghSdk.getRepoReadme('szymonsuchanowski')).rejects.toThrow('No username or repo name specified!');
+        });
+
+        it('Should throw exception when specified username is incorrect', async () => {
+            const ghSdk = new GitHubSDK(user.username, user.token);
+            await expect(ghSdk.getRepoReadme('///use---r--does-not-exist////', 'xxx')).rejects.toThrow('Not Found');
+        });
+
+        it('Should throw exception when specified repo name is incorrect', async () => {
+            const ghSdk = new GitHubSDK(user.username, user.token);
+            await expect(ghSdk.getRepoReadme('szymonsuchanowski', 'xxx')).rejects.toThrow('Not Found');
+        });
+
+        it('Should return readme info when username & repo name are correct', async () => {
+            const ghSdk = new GitHubSDK(user.username, user.token);
+            const result = await ghSdk.getRepoReadme('devmentor-pl', 'practice-js-basics');
+            expect(result.name).toBe('README.md');
+        });
+    });
+
+    describe('getUserFollowers(username)', () => {
+        it('Should throw exception when username is not specified', async () => {
+            const ghSdk = new GitHubSDK(user.username, user.token);
+            await expect(ghSdk.getUserFollowers()).rejects.toThrow('No username specified!');
+        });
+
+        it('Should throw exception when username is incorrect', async () => {
+            const ghSdk = new GitHubSDK(user.username, user.token);
+            await expect(ghSdk.getUserFollowers('----user--does-not---exist//')).rejects.toThrow('Not Found');
+        });
+
+        it('Should return followers list when username is correct', async () => {
+            const ghSdk = new GitHubSDK(user.username, user.token);
+            const result = await ghSdk.getUserFollowers('szymonsuchanowski');
+            expect(Array.isArray(result)).toBeTruthy();
+        });
+    });
+
+    describe('getUserFollowing(username)', () => {
+        it('Should throw exception when username is not specified', async () => {
+            const ghSdk = new GitHubSDK(user.username, user.token);
+            await expect(ghSdk.getUserFollowing()).rejects.toThrow('No username specified!');
+        });
+
+        it('Should throw exception when username is incorrect', async () => {
+            const ghSdk = new GitHubSDK(user.username, user.token);
+            await expect(ghSdk.getUserFollowing('----user--does-not---exist//')).rejects.toThrow('Not Found');
+        });
+
+        it('Should return list of following users when username is correct', async () => {
+            const ghSdk = new GitHubSDK(user.username, user.token);
+            const result = await ghSdk.getUserFollowing('szymonsuchanowski');
+            expect(Array.isArray(result)).toBeTruthy();
+        });
     });
 })
 

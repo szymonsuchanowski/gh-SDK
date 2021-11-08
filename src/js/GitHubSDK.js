@@ -54,6 +54,34 @@ class GitHubSDK {
         return await this._fetch(`users/${username}/repos`, this._options());
     }
 
+    async getRepoCommits(username, repoName) {
+        if (!username || !repoName) {
+            throw new Error('No username or repo name specified!');
+        }
+        return await this._fetch(`repos/${username}/${repoName}/commits`, this._options());
+    }
+
+    async getRepoReadme(username, repoName) {
+        if (!username || !repoName) {
+            throw new Error('No username or repo name specified!');
+        }
+        return await this._fetch(`repos/${username}/${repoName}/readme`);
+    }
+
+    async getUserFollowers(username) {
+        if(!username) {
+            throw new Error('No username specified!');
+        }
+        return await this._fetch(`users/${username}/followers`, this._options());
+    }
+
+    async getUserFollowing(username) {
+        if(!username) {
+            throw new Error('No username specified!');
+        }
+        return await this._fetch(`users/${username}/following`);
+    }
+
     _setProperty(propertyName, propertyValue) {
         if (!propertyValue) {
             throw new Error(`No ${propertyName} specified!`);
@@ -64,7 +92,7 @@ class GitHubSDK {
     async _fetch(additionalPath, options) {
         const promise = await fetch(this.url + additionalPath, options);
         if (promise.ok) {
-            return promise.json();
+            return await promise.json();
         }
         throw new Error(promise.statusText);
     }
