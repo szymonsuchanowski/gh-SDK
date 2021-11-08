@@ -82,6 +82,13 @@ class GitHubSDK {
         return await this._fetch(`users/${username}/following`);
     }
 
+    async getRepoEvents(username, repoName) {
+        if (!username || !repoName) {
+            throw new Error('No username or repo name specified!');
+        }
+        return await this._fetch(`repos/${username}/${repoName}/events`);
+    }
+
     _setProperty(propertyName, propertyValue) {
         if (!propertyValue) {
             throw new Error(`No ${propertyName} specified!`);

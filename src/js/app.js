@@ -13,5 +13,7 @@ function init() {
         .then(data => console.log(data));
     gh.getRepoReadme('devmentor-pl', 'practice-js-basics')
         .then(data => console.log(data));
+    gh.getRepoEvents('devmentor-pl', 'practice-js-basics')
+        .then(data => console.log(data));
 }
 
