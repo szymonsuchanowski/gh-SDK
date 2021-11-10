@@ -67,13 +67,13 @@ describe('GitHubSDK class', () => {
 
         it('Should throw exception when specified username is incorrect', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
-            await expect(ghSDK.getUserInfo('///user--do-not-exist////')).rejects.toThrow('Not Found');
+            await expect(ghSDK.getUserInfo('///user--do-not-exist/----//----/')).rejects.toThrow('Not Found');
         });
 
         it('Should return user login when correct username is specified', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
-            const { login } = await ghSDK.getUserInfo('devmentor-pl');
-            expect(login).toBe('devmentor-pl');
+            const { login } = await ghSDK.getUserInfo('szymonsuchanowski');
+            expect(login).toBe('szymonsuchanowski');
         });
     });
 
@@ -85,12 +85,12 @@ describe('GitHubSDK class', () => {
 
         it('Should throw exception when specified username is incorrect', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
-            await expect(ghSDK.getUserPublicRepos('///use---r--do-not-exist////')).rejects.toThrow('Not Found');
+            await expect(ghSDK.getUserPublicRepos('///use---r--do-not-exist//-------//')).rejects.toThrow('Not Found');
         });
 
         it('Should return repos list when username is correct', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
-            const result = await ghSDK.getUserPublicRepos('devmentor-pl');
+            const result = await ghSDK.getUserPublicRepos('szymonsuchanowski');
             expect(Array.isArray(result)).toBeTruthy();
         });
     });
@@ -118,12 +118,12 @@ describe('GitHubSDK class', () => {
 
         it('Should throw exception when specified repo name is incorrect', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
-            await expect(ghSDK.getRepoCommits('szymonsuchanowski', 'xxx')).rejects.toThrow('Not Found');
+            await expect(ghSDK.getRepoCommits('szymonsuchanowski', '--repo-does-not-exist--')).rejects.toThrow('Not Found');
         });
 
         it('Should return commits list when username & repo name are correct', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
-            const result = await ghSDK.getRepoCommits('devmentor-pl', 'practice-js-basics');
+            const result = await ghSDK.getRepoCommits('szymonsuchanowski', 'practice-js-basics');
             expect(Array.isArray(result)).toBeTruthy();
         });
     });
@@ -151,12 +151,12 @@ describe('GitHubSDK class', () => {
 
         it('Should throw exception when specified repo name is incorrect', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
-            await expect(ghSDK.getRepoReadme('szymonsuchanowski', 'xxx')).rejects.toThrow('Not Found');
+            await expect(ghSDK.getRepoReadme('szymonsuchanowski', '--repo-does-not-exist--')).rejects.toThrow('Not Found');
         });
 
         it('Should return readme info when username & repo name are correct', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
-            const result = await ghSDK.getRepoReadme('devmentor-pl', 'practice-js-basics');
+            const result = await ghSDK.getRepoReadme('szymonsuchanowski', 'practice-js-basics');
             expect(result.name).toBe('README.md');
         });
     });
@@ -220,12 +220,12 @@ describe('GitHubSDK class', () => {
 
         it('Should throw exception when specified repo name is incorrect', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
-            await expect(ghSDK.getRepoEvents('szymonsuchanowski', 'xxx')).rejects.toThrow('Not Found');
+            await expect(ghSDK.getRepoEvents('szymonsuchanowski', '--repo-does-not-exist--')).rejects.toThrow('Not Found');
         });
 
         it('Should return repo events when username & repo name are correct', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
-            const result = await ghSDK.getRepoEvents('devmentor-pl', 'practice-js-basics');
+            const result = await ghSDK.getRepoEvents('szymonsuchanowski', 'practice-js-basics');
             expect(Array.isArray(result)).toBeTruthy();
         });
     });
@@ -302,21 +302,22 @@ describe('GitHubSDK class', () => {
 
         it('Should throw exception when repo name is not specified', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
-            await expect(ghSDK.removeInvitation('szymonsuchanowski')).rejects.toThrow('No username or repo name specified!');
+            await expect(ghSDK.removeInvitation('szymonsuchanowski-test')).rejects.toThrow('No username or repo name specified!');
         });
 
         it('Should throw exception when specified repo name is incorrect', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
-            await expect(ghSDK.removeInvitation('szymonsuchanowski', '---repo--does-not-exi///st----')).rejects.toThrow('Not Found');
+            await expect(ghSDK.removeInvitation('szymonsuchanowski-test', '---repo--does-not-exi///st----')).rejects.toThrow('Not Found');
         });
     });
 
     describe('flow: create test repo -> try to create the same test repo -> send invitation for user to created test repo -> trying remove invitation for not invited user -> remove invitation for invited user -> delete created test repo', () => {
         it('Should create test repo', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
+            const repoTestName = '--new-test-repo--';
             const reposBeforeCreating = await ghSDK.getUserPublicRepos(user.username);
             const reposNoBeforeCreating = reposBeforeCreating.length;
-            await ghSDK.createRepo('--new-test-repo--');
+            await ghSDK.createRepo(repoTestName);
             const reposAfterCreating = await ghSDK.getUserPublicRepos(user.username);
             const reposNoAfterCreating = reposAfterCreating.length;
             expect(reposNoAfterCreating).toBe(reposNoBeforeCreating + 1);
@@ -324,13 +325,15 @@ describe('GitHubSDK class', () => {
 
         it('Should throw exception when trying to create repo with the same name', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
-            await expect(ghSDK.createRepo('--new-test-repo--')).rejects.toThrow('Unprocessable Entity');
+            const repoTestName = '--new-test-repo--';
+            await expect(ghSDK.createRepo(repoTestName)).rejects.toThrow('Unprocessable Entity');
         });
 
         it('Should send invitation for test user to created repo', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
             const invitedUser = 'szymonsuchanowski-test';
-            const result = await ghSDK.sendInvitation(invitedUser, '--new-test-repo--');
+            const repoTestName = '--new-test-repo--';
+            const result = await ghSDK.sendInvitation(invitedUser, repoTestName);
             const { login } = result.invitee;
             expect(login).toBe(invitedUser);
         });
@@ -338,29 +341,31 @@ describe('GitHubSDK class', () => {
         it('Should throw exception when trying to remove invitation for not invited user', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
             const userNotInvited = 'szymonsuchanowski-test2';
-            expect(ghSDK.removeInvitation(userNotInvited, '--new-test-repo--')).rejects.toThrow('Specified user was not invited!');
+            const repoTestName = '--new-test-repo--';
+            expect(ghSDK.removeInvitation(userNotInvited, repoTestName)).rejects.toThrow('Specified user was not invited!');
         });
 
         it('Should remove invitation for invited user', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
-            const invitationsListBeforeRemoving = await ghSDK.getInvitationsList('--new-test-repo--');
+            const invitedUser = 'szymonsuchanowski-test';
+            const repoTestName = '--new-test-repo--';
+            const invitationsListBeforeRemoving = await ghSDK.getInvitationsList(repoTestName);
             const invitationsNoBeforeRemoving = invitationsListBeforeRemoving.length;
-            await ghSDK.removeInvitation('szymonsuchanowski-test', '--new-test-repo--');
-            const invitationsListAfterRemoving = await ghSDK.getInvitationsList('--new-test-repo--');
+            await ghSDK.removeInvitation(invitedUser, repoTestName);
+            const invitationsListAfterRemoving = await ghSDK.getInvitationsList(repoTestName);
             const invitationsNoAfterRemoving = invitationsListAfterRemoving.length;
             expect(invitationsNoAfterRemoving).toBe(invitationsNoBeforeRemoving - 1);
         })
 
         it('Should delete created test repo', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
+            const repoTestName = '--new-test-repo--';
             const reposBeforeDeleting = await ghSDK.getUserPublicRepos(user.username);
             const reposNoBeforeDeleting = reposBeforeDeleting.length;
-            await ghSDK.deleteRepo('--new-test-repo--');
+            await ghSDK.deleteRepo(repoTestName);
             const reposAfterDeleting = await ghSDK.getUserPublicRepos(user.username);
             const reposNoAfterDeleting = reposAfterDeleting.length;
             expect(reposNoAfterDeleting).toBe(reposNoBeforeDeleting - 1);
         });
     });
 })
-
-
