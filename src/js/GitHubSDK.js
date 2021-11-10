@@ -20,18 +20,6 @@ class GitHubSDK {
         } else {
             throw new Error('Token is not connected with specified username!');
         }
-        //return response;
-        /*const promise = await this._fetch('user', this._options());
-        if (promise.ok) {
-            const response = await promise.json();
-            if (response.login === this.username) {
-                return promise.status;
-            }
-            throw new Error('Token is not connected with specified username!');
-        } else if (promise.status === 401) {
-            throw new Error('Unauthorized token!');
-        }
-        throw new Error(`Error! Status: ${promise.status}`);*/
     }
 
     async getUserInfo(username) {
@@ -39,12 +27,6 @@ class GitHubSDK {
             throw new Error('No username specified!');
         }
         return await this._fetch(`users/${username}`, this._options());
-        /*if(username) {
-            const promise = await this._fetch(`users/${username}`, this._options());
-            if (promise.ok) 
-        } else {
-            throw new Error('No username specified!');
-        }*/
     }
 
     async getUserPublicRepos(username) {
@@ -117,11 +99,28 @@ class GitHubSDK {
         return await this._fetch(`repos/${this.username}/${repoName}/invitations`, this._options());
     }
 
+    async removeInvitation(username, repoName) {
+        if (!username || !repoName) {
+            throw new Error('No username or repo name specified!');
+        }
+        const invitationsList = await this.getInvitationsList(repoName);
+        const invitationId = this._getInvitationId(invitationsList, username);
+        if(!invitationId) {
+            throw new Error('Specified user was not invited!');
+        }
+        return await this._fetch(`repos/${this.username}/${repoName}/invitations/${invitationId}`, this._deleteOptions());
+    }
+
     _setProperty(propertyName, propertyValue) {
         if (!propertyValue) {
             throw new Error(`No ${propertyName} specified!`);
         }
         this[propertyName] = propertyValue;
+    }
+
+    _getInvitationId(invitationsList, username) {
+        const invitation = invitationsList.find(invitation => invitation.invitee.login === username);
+        return invitation ? invitation.id : null;
     }
 
     async _fetch(additionalPath, options) {
