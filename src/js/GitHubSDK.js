@@ -65,7 +65,7 @@ class GitHubSDK {
         if (!username || !repoName) {
             throw new Error('No username or repo name specified!');
         }
-        return await this._fetch(`repos/${username}/${repoName}/readme`);
+        return await this._fetch(`repos/${username}/${repoName}/readme`, this._options());
     }
 
     async getUserFollowers(username) {
@@ -79,14 +79,35 @@ class GitHubSDK {
         if(!username) {
             throw new Error('No username specified!');
         }
-        return await this._fetch(`users/${username}/following`);
+        return await this._fetch(`users/${username}/following`, this._options());
     }
 
     async getRepoEvents(username, repoName) {
         if (!username || !repoName) {
             throw new Error('No username or repo name specified!');
         }
-        return await this._fetch(`repos/${username}/${repoName}/events`);
+        return await this._fetch(`repos/${username}/${repoName}/events`, this._options());
+    }
+
+    async createRepo(repoName) {
+        if (!repoName) {
+            throw new Error('No repo name specified!');
+        }
+        return await this._fetch(`user/repos`, this._createOptions(repoName));
+    }
+
+    async deleteRepo(repoName) {
+        if (!repoName) {
+            throw new Error('No repo name specified!');
+        }
+        return await this._fetch(`repos/${this.username}/${repoName}`, this._deleteOptions());
+    }
+
+    async sendInvitation(invitedUser, repoName) {
+        if (!invitedUser || !repoName) {
+            throw new Error('No username or repo name specified!');
+        }
+        return await this._fetch(`repos/${this.username}/${repoName}/collaborators/${invitedUser}`, this._sendOptions());
     }
 
     _setProperty(propertyName, propertyValue) {
@@ -99,14 +120,13 @@ class GitHubSDK {
     async _fetch(additionalPath, options) {
         const promise = await fetch(this.url + additionalPath, options);
         if (promise.ok) {
+            if(promise.status === 204) {
+                return promise;
+            }
             return await promise.json();
         }
         throw new Error(promise.statusText);
     }
-
-    /*async _fetch(additionalPath, options) {
-        return await fetch(this.url + additionalPath, options);
-    }*/
 
     _options() {
         return {
@@ -114,6 +134,44 @@ class GitHubSDK {
                 Accept: "application/vnd.github.v3+json",
                 Authorization: `token ${this.token}`,
             },
+        }
+    }
+
+    _createOptions(name) {
+        return {
+            method: 'POST',
+            headers: {
+                Accept: 'application/vnd.github.v3+json',
+                Authorization: `token ${this.token}`,
+            },
+            body: JSON.stringify({
+                name: name
+            }),
+        }
+    }
+
+    _deleteOptions() {
+        return {
+            method: 'DELETE',
+            headers: {
+                Accept: 'application/vnd.github.v3+json',
+                Authorization: `token ${this.token}`,
+            },
+        }
+    }
+
+    _sendOptions() {
+        return {
+            method: 'PUT',
+            credentials: 'same-origin',
+            redirect: 'follow',
+            headers: {
+                Accept: 'application/vnd.github.v3+json',
+                Authorization: `token ${this.token}`,
+            },
+            body: JSON.stringify({
+                permission: 'pull'
+            }),
         }
     }
 }
