@@ -47,7 +47,7 @@ class GitHubSDK {
         }*/
     }
 
-    async getUserRepos(username) {
+    async getUserPublicRepos(username) {
         if(!username) {
             throw new Error('No username specified!');
         }
@@ -108,6 +108,13 @@ class GitHubSDK {
             throw new Error('No username or repo name specified!');
         }
         return await this._fetch(`repos/${this.username}/${repoName}/collaborators/${invitedUser}`, this._sendOptions());
+    }
+
+    async getInvitationsList(repoName) {
+        if (!repoName) {
+            throw new Error('No repo name specified!');
+        }
+        return await this._fetch(`repos/${this.username}/${repoName}/invitations`, this._options());
     }
 
     _setProperty(propertyName, propertyValue) {

@@ -4,7 +4,7 @@ import GitHubSDK from '../src/js/GitHubSDK';
 import user from '../src/js/user.config';
 
 describe('GitHubSDK class', () => {
-    describe('Create instance', () => {
+    /*describe('Create instance', () => {
         it('Should throw exception when username is not specified', () => {
             function createGhSDK() {
                 new GitHubSDK(undefined, 'xxxx');
@@ -77,20 +77,20 @@ describe('GitHubSDK class', () => {
         });
     });
 
-    describe('getUserRepos(username)', () => {
+    describe('getUserPublicRepos(username)', () => {
         it('Should throw exception when username is not specified', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
-            await expect(ghSDK.getUserRepos()).rejects.toThrow('No username specified!');
+            await expect(ghSDK.getUserPublicRepos()).rejects.toThrow('No username specified!');
         });
 
         it('Should throw exception when specified username is incorrect', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
-            await expect(ghSDK.getUserRepos('///use---r--do-not-exist////')).rejects.toThrow('Not Found');
+            await expect(ghSDK.getUserPublicRepos('///use---r--do-not-exist////')).rejects.toThrow('Not Found');
         });
 
         it('Should return repos list when username is correct', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
-            const result = await ghSDK.getUserRepos('devmentor-pl');
+            const result = await ghSDK.getUserPublicRepos('devmentor-pl');
             expect(Array.isArray(result)).toBeTruthy();
         });
     });
@@ -279,10 +279,10 @@ describe('GitHubSDK class', () => {
     describe('flow: create test repo -> try to create the same test repo -> send invitation to created test repo -> delete created test repo', () => {
         it('Should create test repo', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
-            const reposBeforeCreating = await ghSDK.getUserRepos(user.username);
+            const reposBeforeCreating = await ghSDK.getUserPublicRepos(user.username);
             const reposNoBeforeCreating = reposBeforeCreating.length;
             await ghSDK.createRepo('--new-test-repo--');
-            const reposAfterCreating = await ghSDK.getUserRepos(user.username);
+            const reposAfterCreating = await ghSDK.getUserPublicRepos(user.username);
             const reposNoAfterCreating = reposAfterCreating.length;
             expect(reposNoAfterCreating).toBe(reposNoBeforeCreating + 1);
         });
@@ -302,12 +302,24 @@ describe('GitHubSDK class', () => {
 
         it('Should delete created test repo', async () => {
             const ghSDK = new GitHubSDK(user.username, user.token);
-            const reposBeforeDeleting = await ghSDK.getUserRepos(user.username);
+            const reposBeforeDeleting = await ghSDK.getUserPublicRepos(user.username);
             const reposNoBeforeDeleting = reposBeforeDeleting.length;
             await ghSDK.deleteRepo('--new-test-repo--');
-            const reposAfterDeleting = await ghSDK.getUserRepos(user.username);
+            const reposAfterDeleting = await ghSDK.getUserPublicRepos(user.username);
             const reposNoAfterDeleting = reposAfterDeleting.length;
             expect(reposNoAfterDeleting).toBe(reposNoBeforeDeleting - 1);
+        });
+    });*/
+    describe('getInvitationsList(repoName)', () => {
+        it('Should throw exception when repo name is not specified', async () => {
+            const ghSDK = new GitHubSDK(user.username, user.token);
+            expect(ghSDK.getInvitationsList()).rejects.toThrow('No repo name specified!');
+        });
+
+        it('Should throw exception when specified repo name does not exist', async () => {
+            const ghSDK = new GitHubSDK(user.username, user.token);
+            const repoName = '----repo--does-not----exis/////t---';
+            expect(ghSDK.getInvitationsList(repoName)).rejects.toThrow('Not Found');
         });
     });
 })
