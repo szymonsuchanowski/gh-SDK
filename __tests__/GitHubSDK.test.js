@@ -58,7 +58,7 @@ describe('GitHubSDK class', () => {
             const tokenTest = token;
             const ghSDK = new GitHubSDK(usernameTest, tokenTest);
             const { login } = await ghSDK.validateUser();
-            expect(login).toBe(username);
+            expect(login).toBe(usernameTest);
         });
     });
 
