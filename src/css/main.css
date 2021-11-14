@@ -1,4 +1,5 @@
 :root {
+    --black: rgba(0, 0, 0, 0.7);
     --console: #808082;
     --consoleGreen: #22c941;
     --consoleRed: #fd605a;
@@ -6,7 +7,9 @@
     --darkGray: #1e1e1e;
     --gray: #212528;
     --lightConsole: #a3a3a3;
+    --lightWhite: rgba(255, 255, 255, 0.9);
     --linkConsole: #14b5d0;
+    --tranInfo: 0.25s linear;
     --white: #fff;
 }
 
@@ -31,7 +34,7 @@ a {
     text-decoration: none;
 }
 
-.main {
+body {
     margin: 0 auto;
     max-width: 1440px;
     padding: 0 24px;
@@ -135,8 +138,52 @@ a {
     color: var(--linkConsole);
 }
 
-.projects__list--1col {
-    grid-template-columns: 1fr;
+.modal {
+    align-items: center;
+    backdrop-filter: blur(0);
+    background-color: var(--black);
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    opacity: 0;
+    overflow: auto;
+    pointer-events: none;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 2;
+}
+
+.modal--active {
+    backdrop-filter: blur(5px);
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal__content {
+    align-items: center;
+    background-color: var(--lightWhite);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+        rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    border-radius: 10px;
+    color: var(--darkGray);
+    display: flex;
+    font-family: "Roboto Mono", monospace;
+    font-size: 18px;
+    font-weight: bold;
+    justify-content: center;
+    letter-spacing: 0.1rem;
+    line-height: 32px;
+    max-width: 1440px;
+    padding: 30px;
+    position: relative;
+    text-align: center;
+    width: 90%;
+}
+
+.modal__content--active {
+    transform: scale(1);
 }
 
 @media only screen and (min-width: 768px) {
@@ -144,9 +191,18 @@ a {
         font-size: 24px;
         margin: 36px 0;
     }
+
+    .modal__content {
+        padding: 80px;
+        width: 70%;
+    }
 }
 
 @media only screen and (min-width: 960px) {
+    body {
+        width: 90%;
+    }
+
     .project__info {
         grid-template-columns: 140px 1fr;
     }
@@ -164,12 +220,16 @@ a {
     }
 
     .project__link {
-        transition: color 0.5s linear;
+        transition: color var(--tranInfo);
     }
 
     .project__link:hover {
         color: var(--white);
     }
+}
+
+.projects__list--1col {
+    grid-template-columns: 1fr;
 }
 
 .project--prototype {

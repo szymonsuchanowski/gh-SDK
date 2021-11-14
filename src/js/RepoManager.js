@@ -1,31 +1,19 @@
 class RepoManager {
-    constructor(ghSDK) {
+    constructor(ghSDK, modal) {
         this.ghSDK = ghSDK;
+        this.modal = modal;
         this.projectEl = document.querySelector('.project--prototype');
         this.projectsListEl = document.querySelector('.projects__list');
     }
 
-    async renderRepos() {
-        const isUserValid = await this._isUserValid();
-        if (!isUserValid) {
-            return this._showInfoMsg();
-        }
-        const username = this.ghSDK.getUsername();
+    async renderRepos(username = process.env.USERNAME) {
+        await this.ghSDK.validateUser();
         const repos = await this.ghSDK.getUserPublicRepos(username);
-        return repos.length > 0 ? this._insertRepos(repos) : this._showInfoMsg();
-    }
-
-    async _isUserValid() {
-        const { login } = await this.ghSDK.validateUser();
-        return login === process.env.USERNAME;
-    }
-
-    _showInfoMsg() {
-
+        return repos.length > 0 ? this._insertRepos(repos) : this.modal.show('repos');
     }
 
     _insertRepos(reposList) {
-        if(reposList.length === 1) {
+        if (reposList.length === 1) {
             this._changeLayout();
         }
         reposList.forEach(repo => {
@@ -44,7 +32,7 @@ class RepoManager {
         this._setLiTextContent(newLiEl, 'project__description--title', name);
         this._setLiTextContent(newLiEl, 'project__description--subtitle', description);
         this._setLiDemoLink(newLiEl, 'project__link--demo', homepage, name);
-        this._setLinkAttr(newLiEl,'project__link--gh', url, name, 'code');
+        this._setLinkAttr(newLiEl, 'project__link--gh', url, name, 'code');
         return newLiEl;
     }
 
@@ -62,7 +50,7 @@ class RepoManager {
     }
 
     _setLiDemoLink(liEl, className, link, repoTitle) {
-        if(!link) {
+        if (!link) {
             const textContent = 'No demo yet, work in progress...';
             return this._setLiTextContent(liEl, 'project__description--demo', textContent);
         }
